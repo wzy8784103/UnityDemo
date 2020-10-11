@@ -1,0 +1,9 @@
+.vs
+Library
+obj
+Temp
+Logs
+*.csproj
+*.sln
+AssetBundleData
+*.txt
