@@ -101,7 +101,7 @@ public class MessageManager : SingletonBase<MessageManager>
             {
                 InvokeCallBack(resQueue.Dequeue());
             }
-            resQueue.Clear();
+            //resQueue.Clear();
         }
         if(connectAction != null)
 		{
