@@ -23,7 +23,7 @@
 * 集成了基于7z的压缩
 
 多语言框架(Language)及对应工具(Editor/Language、根目录/LanguageExcelCreator(WinForm做的小程序，给策划生成excel多语言用的))
-* Editor窗口：Tools/LanguageWindow(不可以直接使用，需要对应数据表格式支持)
+* Editor窗口：Tools/LanguageWindow
 * 可一键导出excel及一键导入项目，编辑和使用都很方便
 * 代码：文字需要写在单独类中，生成excel时将变量作为key，读取时通过key及当前选择的语言，反射回类中变量
 * prefab和数据表：开发时无需特殊处理，生成excel时查找所有带有中文的，并根据当前prefab名或表名生成唯一key自动填入excel中
