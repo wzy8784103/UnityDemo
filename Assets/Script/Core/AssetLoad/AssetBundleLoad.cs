@@ -53,19 +53,7 @@ public class AssetBundleLoad : AssetLoadBase<AssetBundleLoad>
         if (!IsLoadBundle(abName))
         {
             //依赖
-            string[] depends = Manifest.GetAllDependencies(abName);
-            for (int i = 0; i < depends.Length; i++)
-            {
-                string dependName = depends[i];
-                if (!IsLoadBundle(dependName))
-                {
-                    BundleInfo.CreateInfo(dependName, LoadAssetBundle(dependName));
-                }
-                else
-                {
-                    bundleDic[dependName].Retain();
-                }
-            }
+            LoadAssetBundleDepends(abName);
             BundleInfo.CreateInfo(abName, LoadAssetBundle(abName));
         }
         else
@@ -79,21 +67,6 @@ public class AssetBundleLoad : AssetLoadBase<AssetBundleLoad>
 		}
         AssetInfo.CreateInfo(path, t);
         return t;
-    }
-
-    /// <summary>
-    /// 加载ab，这里就算为Null，也只是输出错误信息，打断加载会导致计数问题变得复杂
-    /// </summary>
-    /// <param name="abName"></param>
-    /// <returns></returns>
-    private AssetBundle LoadAssetBundle(string abName)
-	{
-        AssetBundle assetBundle = AssetBundle.LoadFromFile(GetLoadPath(abName));
-        if (assetBundle == null)
-        {
-            Debug.LogError("assetBundle==" + assetBundle + "为空");
-        }
-        return assetBundle;
     }
 	#endregion
 
@@ -176,23 +149,7 @@ public class AssetBundleLoad : AssetLoadBase<AssetBundleLoad>
         {
             //先添加进容器，防止重复调用
             BundleInfo.CreateInfo(abName, null);
-            string[] depends = Manifest.GetAllDependencies(abName);
-            for (int i = 0; i < depends.Length; i++)
-            {
-                string dependName = depends[i];
-                if (IsLoadBundle(dependName))
-				{
-                    //Debug.Log("LoadAssetCoroutineHelper IsLoadBundle=" + dependName);
-                    bundleDic[dependName].Retain();
-                    continue;
-                }
-                //先添加进容器，防止重复调用
-                BundleInfo.CreateInfo(dependName, null);
-                //Debug.Log("LoadAssetCoroutineHelper dependName=" + dependName);
-                var dependRequest = AssetBundle.LoadFromFileAsync(GetLoadPath(dependName));
-                yield return dependRequest;
-                bundleDic[dependName].bundle = dependRequest.assetBundle;
-            }
+            yield return LoadAssetBundleDependsAsync(abName);
             //Debug.Log("LoadAssetCoroutineHelper abName=" + abName);
             var bundleRequest = AssetBundle.LoadFromFileAsync(GetLoadPath(abName));
             yield return bundleRequest;
@@ -233,28 +190,9 @@ public class AssetBundleLoad : AssetLoadBase<AssetBundleLoad>
         string abName = GetAbName(path);
         if (!IsLoadBundle(abName))
         {
-            //先添加进容器
-            BundleInfo.CreateInfo(abName, null);
-            //加载Manifest 
-            string[] depends = Manifest.GetAllDependencies(abName);
-            //加载所有的依赖文件
-            for (int i = 0; i < depends.Length; i++)
-            {
-                string dependName = depends[i];
-                if (IsLoadBundle(dependName))
-                {
-                    bundleDic[dependName].Retain();
-                    continue;
-                }
-                //先添加进容器
-                BundleInfo.CreateInfo(dependName, null);
-                var dependRequest = AssetBundle.LoadFromFileAsync(GetLoadPath(dependName));
-                yield return dependRequest;
-                bundleDic[dependName].bundle = dependRequest.assetBundle;
-            }
-            var bundleRequest = AssetBundle.LoadFromFileAsync(GetLoadPath(abName));
-            yield return bundleRequest;
-            bundleDic[abName].bundle = bundleRequest.assetBundle;
+            //这里用同步加载了，有的场景引用的东西太多了，用异步加载太慢了
+            LoadAssetBundleDepends(abName);
+            BundleInfo.CreateInfo(abName, LoadAssetBundle(abName));
         }
         else
         {
@@ -316,7 +254,61 @@ public class AssetBundleLoad : AssetLoadBase<AssetBundleLoad>
 		}
 		return true;
 	}
-
+    private void LoadAssetBundleDepends(string abName)
+    {
+        //比如加载A，包含引用B1和B2，B1和B2都引用了C，但是GetAllDependencies(A)方法只会算一个C的计数
+        //而如果之后再单独加载B1和B2时，如果不加载依赖会导致依赖计数不对
+        //所以这里使用了GetDirectDependencies
+        string[] depends = Manifest.GetDirectDependencies(abName);
+        for (int i = 0; i < depends.Length; i++)
+        {
+            string dependName = depends[i];
+            if (!IsLoadBundle(dependName))
+            {
+                BundleInfo.CreateInfo(dependName, LoadAssetBundle(dependName));
+            }
+            else
+            {
+                bundleDic[dependName].Retain();
+            }
+            //递归添加所有依赖，如果用GetAllDependencies会导致计数不对
+            LoadAssetBundleDepends(dependName);
+        }
+    }
+    private IEnumerator LoadAssetBundleDependsAsync(string abName)
+    {
+        string[] depends = Manifest.GetAllDependencies(abName);
+        for (int i = 0; i < depends.Length; i++)
+        {
+            string dependName = depends[i];
+            if (IsLoadBundle(dependName))
+            {
+                //Debug.Log("LoadAssetCoroutineHelper IsLoadBundle=" + dependName);
+                bundleDic[dependName].Retain();
+                continue;
+            }
+            //先添加进容器，防止重复调用
+            BundleInfo.CreateInfo(dependName, null);
+            //Debug.Log("LoadAssetCoroutineHelper dependName=" + dependName);
+            var dependRequest = AssetBundle.LoadFromFileAsync(GetLoadPath(dependName));
+            yield return dependRequest;
+            bundleDic[dependName].bundle = dependRequest.assetBundle;
+        }
+    }
+    /// <summary>
+    /// 加载ab，这里就算为Null，也只是输出错误信息，打断加载会导致计数问题变得复杂
+    /// </summary>
+    /// <param name="abName"></param>
+    /// <returns></returns>
+    private AssetBundle LoadAssetBundle(string abName)
+    {
+        AssetBundle assetBundle = AssetBundle.LoadFromFile(GetLoadPath(abName));
+        if (assetBundle == null)
+        {
+            Debug.LogError("assetBundle==" + assetBundle + "为空");
+        }
+        return assetBundle;
+    }
     public string GetLoadPath(string name)
     {
         return GetAbPath() + GetAbName(name);

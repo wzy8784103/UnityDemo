@@ -9,9 +9,9 @@ using UnityEngine;
 public static class AOICoordinates
 {
 	//aoi的格子在单坐标轴最大数量，数量越大，aoi格子越小
-	public const int aoiMaxCount = 100;
+	public static int aoiMaxCount = (int)Math.Ceiling(DiamondCoordinates.maxX / 50d);
 	//一个格子的长度
-	public const float aoiCellWidth = DiamondCoordinates.worldWidth / aoiMaxCount;
+	public static float aoiCellWidth = DiamondCoordinates.worldWidth / aoiMaxCount;
 
 	/// <summary>
 	/// 世界坐标转AOI index

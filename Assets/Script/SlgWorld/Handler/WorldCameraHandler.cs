@@ -18,11 +18,15 @@ public class WorldCameraHandler : WorldHandlerBase
 	{
 		camera = WorldCreator.Singleton.camera;
 		cameraTf = camera.transform;
-		ScriptBridge.Singleton.AddLateUpdate(OnUpdate, this);
+		ScriptBridge.Singleton.AddUpdate(OnUpdate, this);
 		ScriptBridge.Singleton.AddLateUpdate(OnLateUpdate, this);
-		LookAt(new Vector3(0, 0, -1400));
+
+		//默认lookat中心点
+		DiamondVector2 lookAtDPos = new DiamondVector2(DiamondCoordinates.maxX / 2, DiamondCoordinates.maxY / 2);
+		Vector3 worldPos = DiamondCoordinates.DiamondToWorld(lookAtDPos);
+		LookAt(worldPos);
 	}
-	
+
 	private void OnUpdate()
 	{
 		//TODO
@@ -73,6 +77,8 @@ public class WorldCameraHandler : WorldHandlerBase
 	}
 	public void LookAt(Vector3 worldPos)
 	{
-		camera.transform.position = new Vector3(worldPos.x, camera.transform.position.y, worldPos.z - 4.56f);
+		double rad = Math.PI * (90 - camera.transform.localEulerAngles.x) / 180;
+		float z = worldPos.z - (float)Math.Tan(rad) * camera.transform.position.y;
+		camera.transform.position = new Vector3(worldPos.x, camera.transform.position.y, z);
 	}
 }

@@ -17,13 +17,15 @@ public class DiamondCoordinates
 	public const int maxY = 1000;
 	//地图长度，这里就假设长宽都一样了
 	public const float worldWidth = maxX * w;
-
+	//坐标系偏移角度
 	private const double rad = Math.PI * 45 / 180;
+	//缩放矩阵
 	private static Matrix4x4 matrixScale = new Matrix4x4(
 		new Vector4(1 / (DiamondCoordinates.w / (float)Math.Sqrt(2)), 0, 0, 0),
 		new Vector4(0, 1, 0, 0),
 		new Vector4(0, 0, 1 / (DiamondCoordinates.w / (float)Math.Sqrt(2)), 0),
 		new Vector4(0, 0, 0, 1));
+	//旋转矩阵
 	private static Matrix4x4 matrixRotate = new Matrix4x4(
 						new Vector4((float)Math.Cos(rad), 0, (float)Math.Sin(rad), 0),
 						new Vector4(0, 1, 0, 0),

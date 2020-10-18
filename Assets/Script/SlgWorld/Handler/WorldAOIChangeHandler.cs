@@ -30,7 +30,7 @@ public class WorldAOIChangeHandler : WorldHandlerBase
 		Vector2Int aoiLT = AOICoordinates.WorldToAOI(posLT + new Vector3(-extraDis, 0, extraDis));
 		Vector2Int aoiRT = AOICoordinates.WorldToAOI(posRT + new Vector3(extraDis, 0, extraDis));
 		//Vector2Int aoiRB = DiamondCoordinates.WorldToAOI(posRB += new Vector3(extraDis, 0, -extraDis));
-
+		
 		newAOIList.Clear();
 		inactiveList.Clear();
 		newactiveList.Clear();

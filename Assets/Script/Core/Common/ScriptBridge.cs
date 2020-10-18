@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 /// <summary>
 /// 主要用于不是脚本的类想用update,协程等
+/// 容器全用list做，保证有序性
 /// </summary>
 public class ScriptBridge : MonoSingletonBase<ScriptBridge>
 {
