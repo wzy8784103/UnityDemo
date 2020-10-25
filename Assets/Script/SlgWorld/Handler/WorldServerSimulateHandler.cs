@@ -49,10 +49,10 @@ public class WorldServerSimulateHandler : WorldHandlerBase
 	}
 
 	//正常userid服务端通过session拿，这里因为是模拟所以就客户端发了
-	private void OnAOIChange(List<Vector2Int> newactiveList, List<Vector2Int> inactiveList, long userId)
+	private void OnAOIChange(List<Vector2Int> newActiveList, List<Vector2Int> inActiveList, long userId)
 	{
 		//旧的移除
-		foreach(var item in inactiveList)
+		foreach(var item in inActiveList)
 		{
 			if (aoi2UserDic.ContainsKey(item))
 			{
@@ -61,12 +61,12 @@ public class WorldServerSimulateHandler : WorldHandlerBase
 		}
 
 		//当客户端第一次注册新的aoi时，将新的所有信息返还给客户端
-		if (newactiveList.Count > 0)
+		if (newActiveList.Count > 0)
 		{
 			List<WorldDataDto> result = new List<WorldDataDto>();
 			float halfAOICellWidth = AOICoordinates.aoiCellWidth / 2;
 			//新的添加
-			foreach (var item in newactiveList)
+			foreach (var item in newActiveList)
 			{
 				if (!aoi2UserDic.ContainsKey(item))
 				{
@@ -104,6 +104,7 @@ public class WorldServerSimulateHandler : WorldHandlerBase
 							result.Add(dto);
 						});
 			}
+			//模拟服务器延迟
 			TimeManager.Singleton.CreateTimerOfDuration((long)(Random.Range(0.2f, 0.5f) * 1000), (arg) =>
 			{
 				EventDispatcher.Singleton.NotifyListener(EventKey.WorldServerDataSend, result);

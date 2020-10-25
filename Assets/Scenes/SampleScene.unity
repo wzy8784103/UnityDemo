@@ -343,24 +343,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d31effa876fc654aaecb2017c216ab9, type: 3}
---- !u!1 &1607701850 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5427483632034963588, guid: 1d31effa876fc654aaecb2017c216ab9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1607701849}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1607701851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1607701850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aa087801a6ca23468369d8d634832c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1979166233
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,3 +388,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useAssetBundle: 0
   debugAssetBundle: 0
+  language: Chinese

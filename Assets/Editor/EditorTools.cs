@@ -19,12 +19,6 @@ public class EditorTools
         EditorWindow.GetWindow(typeof(AssetBundleEditorWindow)).Show();
     }
 
-    [MenuItem("Tools/Test")]
-    public static void Test()
-    {
-
-    }
-
     public static void RunCommand(string fileName, string command, string workingDirectory, bool isOpenWindow = false)
     {
         Debug.Log(command);

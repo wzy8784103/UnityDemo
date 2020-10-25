@@ -101,7 +101,7 @@ public class WorldTileHandler : WorldHandlerBase
             GameObject temp = AssetManager.AssetLoad.LoadAsset<GameObject>(ResPath.slgTilePath, this);
             obj = GameObject.Instantiate(temp);
             obj.transform.parent = WorldNode.TileParent;
-            obj.transform.localScale = new Vector3(100, 100, 1);
+            obj.transform.localScale = Vector3.one;
             obj.transform.localEulerAngles = new Vector3(-90, 180, 0);
             Renderer renderer = obj.GetComponent<Renderer>();
             MaterialPropertyBlock block = new MaterialPropertyBlock();

@@ -120,7 +120,7 @@ public class RedPointNode
         Transform redTf = GameNode.Singleton.UIParentTf.Find(redPointPath);
         if (redTf == null)
         {
-            Debug.LogError("红点系统路径填写错误:" + redPointPath);
+            //Debug.LogError("红点系统路径填写错误:" + redPointPath);
             return;
         }
         //红点计数为0直接设置False就行了

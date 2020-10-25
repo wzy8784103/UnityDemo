@@ -125,7 +125,7 @@ public static class UITools
 
 	public static bool IsRaycastUI()
 	{
-		if (InputManager.GetMouseButton())
+		if (InputManager.GetMouseButton() || InputManager.GetMouseButtonUp())
 		{
 			if(PlatformManager.IsEditor())
 			{

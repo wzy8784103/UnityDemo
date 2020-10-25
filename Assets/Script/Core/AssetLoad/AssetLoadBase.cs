@@ -82,16 +82,6 @@ public abstract class AssetLoadBase<TChild> : SingletonBase<TChild>, IAssetLoad 
         LoadAssetAsync<T>(pathList, action, arg);
     }
 
-    public abstract T LoadAsset<T>(string fullPath) where T : Object;
-    public abstract void LoadAssetAsync<T>(string fullPath, Action<AssetLoadInfo> action, object arg = null) where T : Object;
-    public abstract void LoadAssetAsync<T>(List<string> pathList, Action<List<AssetLoadInfo>> action, object arg = null) where T : Object;
-    public abstract void LoadSceneAsync(string fullPath, Action<AssetLoadInfo> action);
-    /// <summary>
-    /// 卸载资源
-    /// </summary>
-    /// <param name="fullPath">资源名</param>
-    public abstract void UnLoadAsset(string fullPath);
-
     /// <summary>
     /// 加一个清理的方法，用于重连或者注销等操作
     /// </summary>
@@ -169,6 +159,17 @@ public abstract class AssetLoadBase<TChild> : SingletonBase<TChild>, IAssetLoad 
             prepareLoadDic.Remove(fullPath);
         }
     }
+
+    public abstract T LoadAsset<T>(string fullPath) where T : Object;
+    public abstract void LoadAssetAsync<T>(string fullPath, Action<AssetLoadInfo> action, object arg = null) where T : Object;
+    public abstract void LoadAssetAsync<T>(List<string> pathList, Action<List<AssetLoadInfo>> action, object arg = null) where T : Object;
+    public abstract void LoadSceneAsync(string fullPath, Action<AssetLoadInfo> action);
+    /// <summary>
+    /// 卸载资源
+    /// </summary>
+    /// <param name="fullPath">资源名</param>
+    public abstract void UnLoadAsset(string fullPath);
+
 }
 public class AssetInfo
 {

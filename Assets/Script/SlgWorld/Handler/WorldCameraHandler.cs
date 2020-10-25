@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class WorldCameraHandler : WorldHandlerBase
 {
 	private const float speed = 1;
-	//最小容忍距离，超过发送移动广播
+	//最小移动容忍距离
 	private float minMoveDis = 0.2f;
 	private Vector2 lastTouchPos = Vector2.zero;
 

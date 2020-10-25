@@ -15,7 +15,6 @@ public class MessageManager : SingletonBase<MessageManager>
     private Dictionary<int, Action<MessageResponseBase>> actonDict = new Dictionary<int, Action<MessageResponseBase>>();
     private Dictionary<int, Action<MessageResponseBase>> broadCastActonDict = new Dictionary<int, Action<MessageResponseBase>>();
     //回调队列
-    //private Queue<MessageResponseBase> resQueue = new Queue<MessageResponseBase>();
     private Queue<byte[]> resQueue = new Queue<byte[]>();
 
     public override void InitSingleton()

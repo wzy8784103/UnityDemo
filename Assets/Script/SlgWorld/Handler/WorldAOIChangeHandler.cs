@@ -12,9 +12,9 @@ public class WorldAOIChangeHandler : WorldHandlerBase
 	private List<Vector2Int> newAOIList = new List<Vector2Int>(10);
 
 	//发送的非活跃列表
-	private List<Vector2Int> inactiveList = new List<Vector2Int>(10);
+	private List<Vector2Int> inActiveList = new List<Vector2Int>(10);
 	//发送的活跃列表
-	private List<Vector2Int> newactiveList = new List<Vector2Int>(10);
+	private List<Vector2Int> newActiveList = new List<Vector2Int>(10);
 
 	public override void OnInit()
 	{
@@ -32,8 +32,8 @@ public class WorldAOIChangeHandler : WorldHandlerBase
 		//Vector2Int aoiRB = DiamondCoordinates.WorldToAOI(posRB += new Vector3(extraDis, 0, -extraDis));
 		
 		newAOIList.Clear();
-		inactiveList.Clear();
-		newactiveList.Clear();
+		inActiveList.Clear();
+		newActiveList.Clear();
 		for (int x = aoiLT.x; x <= aoiRT.x; x++)
 		{
 			for(int y = aoiLT.y; y <= aoiLB.y; y++)
@@ -47,7 +47,7 @@ public class WorldAOIChangeHandler : WorldHandlerBase
 				//如果从不活跃变为活跃，则加入新增列表
 				if(aoiStateBytes[AOICoordinates.AOIToIndex(aoiPos)] == 0)
 				{
-					newactiveList.Add(aoiPos);
+					newActiveList.Add(aoiPos);
 				}
 				newAOIList.Add(aoiPos);
 			}
@@ -67,7 +67,7 @@ public class WorldAOIChangeHandler : WorldHandlerBase
 		{
 			if(aoiStateBytes[AOICoordinates.AOIToIndex(item)] == 0)
 			{
-				inactiveList.Add(item);
+				inActiveList.Add(item);
 			}
 		}
 
@@ -79,11 +79,11 @@ public class WorldAOIChangeHandler : WorldHandlerBase
 		oldAOIList = newAOIList;
 		newAOIList = tmp;
 		//如果有新的aoi进入视野或者有旧的移除，就向后台发送通信
-		if (newactiveList.Count > 0 || inactiveList.Count > 0)
+		if (newActiveList.Count > 0 || inActiveList.Count > 0)
 		{
 			//LogHelper.Log(newactiveList, "newactiveList:");
 			//LogHelper.Log(inactiveList, "inactiveList:");
-			EventDispatcher.Singleton.NotifyListener(EventKey.WorldAOIChange, newactiveList, inactiveList, UserModel.Singleton.userId);
+			EventDispatcher.Singleton.NotifyListener(EventKey.WorldAOIChange, newActiveList, inActiveList, UserModel.Singleton.userId);
 		}
 	}
 }

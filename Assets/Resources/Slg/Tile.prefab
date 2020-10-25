@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5202939955721294853}
   - component: {fileID: 5202939955721294852}
   m_Layer: 0
-  m_Name: Quad (4)
+  m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,11 +27,11 @@ Transform:
   m_GameObject: {fileID: 5202939955721294851}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: -0.21}
-  m_LocalScale: {x: 100, y: 100, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 169.016, z: 0}
+  m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 0}
 --- !u!33 &5202939955721294853
 MeshFilter:
   m_ObjectHideFlags: 0

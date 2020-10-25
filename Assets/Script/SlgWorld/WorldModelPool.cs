@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 /// <summary>
 /// 地图所有不在视野中模型的缓存，结构大致如下：
 /// cacheDic： key为模型路径，value为链表，因为同一个模型可能被加多次，所以用链表存储
-/// head: 除上述每个模型的单独链表外，额外做一个全模型链表，用于超出上限时删除最先缓存的模型
+/// head,tail: 除上述每个模型的单独链表外，额外做一个全模型链表，用于超出上限时删除最先缓存的模型
 /// 这样设计的话，插入 获取 删除 都是O(1)的时间复杂度
 /// </summary>
 public class WorldModelPool
