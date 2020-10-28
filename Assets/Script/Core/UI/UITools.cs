@@ -55,13 +55,13 @@ public static class UITools
 	{
 		return "Assets/Resources/" + atlasName + ".spriteatlas";
 	}
-	public static void BindOnClick(GameObject obj, Action<GameObject> action, object arg = null)
+	public static void BindOnClick(GameObject obj, UIEventListener.VoidDelegate action, object arg = null)
 	{
 		UIEventListener listener = UIEventListener.Get(obj);
 		listener.OnClick = (x) => action(obj);
 		listener.parameter = arg;
 	}
-	public static void BindOnClick(Transform tf, Action<GameObject> action, object arg = null)
+	public static void BindOnClick(Transform tf, UIEventListener.VoidDelegate action, object arg = null)
 	{
 		BindOnClick(tf.gameObject, action, arg);
 	}
@@ -107,7 +107,7 @@ public static class UITools
 
 	public static void SetTransform(Transform parentTf, GameObject obj)
 	{
-		obj.transform.parent = parentTf;
+		obj.transform.SetParent(parentTf);
 		obj.transform.localEulerAngles = Vector3.zero;
 		obj.transform.localScale = Vector3.one;
 		obj.transform.localPosition = Vector3.zero;

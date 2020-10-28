@@ -116,13 +116,16 @@ public abstract class UIBase : AutoReleaseBase
             case UIShowLevel.One:
 				{
                     //如果打开的是全屏窗口，则把之前的隐藏掉
-                    Dictionary<UIBase, bool> dic = full2SubDic[openFullViewStack.Peek()];
-                    List<UIBase> list = new List<UIBase>(dic.Keys);
-                    foreach (var view in list)
-                    {
-                        //记录之前的状态，用于显示的时候还原
-                        dic[view] = view.baseObject.activeSelf;
-                        view.Hide();
+                    if (openFullViewStack.Count > 0)
+					{
+                        Dictionary<UIBase, bool> dic = full2SubDic[openFullViewStack.Peek()];
+                        List<UIBase> list = new List<UIBase>(dic.Keys);
+                        foreach (var view in list)
+                        {
+                            //记录之前的状态，用于显示的时候还原
+                            dic[view] = view.baseObject.activeSelf;
+                            view.Hide();
+                        }
                     }
                     openFullViewStack.Push(this);
                     full2SubDic.Add(this, new Dictionary<UIBase, bool>()
@@ -155,12 +158,15 @@ public abstract class UIBase : AutoReleaseBase
                     //从开启列表中移除
                     openFullViewStack.Pop();
                     //把之前的隐藏的打开
-                    Dictionary<UIBase, bool> dic = full2SubDic[openFullViewStack.Peek()];
-                    foreach (var kv in dic)
-                    {
-                        if (kv.Value)
+                    if (openFullViewStack.Count > 0)
+					{
+                        Dictionary<UIBase, bool> dic = full2SubDic[openFullViewStack.Peek()];
+                        foreach (var kv in dic)
                         {
-                            kv.Key.Active();
+                            if (kv.Value)
+                            {
+                                kv.Key.Active();
+                            }
                         }
                     }
                 }
